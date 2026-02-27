@@ -3,10 +3,10 @@
 
 az login
 
-az acr login --name bevmarket
+az acr login --name innovarregistry
 
-docker build -t bevmarket:v0.3.2 . # v0.3.2 is the version version to use
+docker build -t bevmarket:v1.0.0 . # v1.0.0 is the version version to use
 
-docker tag bevmarket:v0.3.2 bevmarket.azurecr.io/bevmarket:v0.3.2
+docker tag bevmarket:v1.0.0 innovarregistry-d0aab0dedqaqc5df.azurecr.io/bevmarket:v1.0.0
 
-docker push bevmarket.azurecr.io/bevmarket:v0.3.2
+docker push innovarregistry-d0aab0dedqaqc5df.azurecr.io/bevmarket:v1.0.0
