@@ -36,7 +36,7 @@ class Api::V1::SalesController < ApplicationController
   def show
     @sale = Sale.includes(:client, :user, sale_items: :stock_item).find(params[:id])
 
-    render json: {status: "success", data: {sale: @sale.as_json(include: [:client, :user, sale_items: :stock_item])}}
+    render json: {status: "success", data: {sale: @sale.as_json(include: {client: {}, user: {}, sale_items: {include: :stock_item}})}}
 
   rescue ActiveRecord::RecordNotFound
     render json: {status: "fail", error: {message: "Sale not found"}}, status: :not_found
