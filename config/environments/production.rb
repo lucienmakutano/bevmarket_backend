@@ -19,8 +19,17 @@ Rails.application.configure do
   # key such as config/credentials/production.key. This key is used to decrypt credentials (and other encrypted files).
   config.require_master_key = false
 
-  # Set secret_key_base from environment variable or generate a stable fallback
-  config.secret_key_base = ENV["SECRET_KEY_BASE"].presence || ENV["RAILS_SECRET_KEY_BASE"].presence || SecureRandom.hex(32)
+  # Set secret_key_base from environment variable or credentials
+  if ENV["SECRET_KEY_BASE"].present?
+    config.secret_key_base = ENV["SECRET_KEY_BASE"]
+  elsif ENV["RAILS_SECRET_KEY_BASE"].present?
+    config.secret_key_base = ENV["RAILS_SECRET_KEY_BASE"]
+  else
+    # For Azure deployments and Docker, generate a stable key for this session
+    # In production, you MUST set SECRET_KEY_BASE environment variable
+    config.secret_key_base = SecureRandom.hex(32)
+    puts "⚠️  WARNING: SECRET_KEY_BASE not set. Generate a secure value and set it as an environment variable for production deployments."
+  end
 
   # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
   # config.public_file_server.enabled = false
