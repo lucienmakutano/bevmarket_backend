@@ -55,10 +55,6 @@ COPY --from=build /rails /rails
 RUN useradd rails --create-home --shell /bin/bash && \
     chown -R rails:rails db log storage tmp
 
-# Create the master.key
-RUN EDITOR="nano" bin/rails credentials:edit && \
-    chmod 644 /rails/config/master.key
-
 USER rails:rails
 
 # Entrypoint prepares the database.
