@@ -1,11 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+beer_item:
+  name: Primus Beer
+  bottles_number: 24
+  capacity: 50
+  capacity_unit: cl
+  establishment: bevmart
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the "{}" from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+soda_item:
+  name: Coca Cola
+  bottles_number: 12
+  capacity: 33
+  capacity_unit: cl
+  establishment: bevmart

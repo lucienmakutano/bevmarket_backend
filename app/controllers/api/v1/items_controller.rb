@@ -12,6 +12,7 @@ class Api::V1::ItemsController < ApplicationController
 
   def create
     @item = Item.new(item_params)
+    @item.establishment_id = current_user.current_establishment_id
     if @item.save
       @stock_item = StockItem.create(stock_item_params.merge(item_id: @item.id))
       StockMovement.create(stock_item_id: @stock_item[:id], quantity: stock_item_params[:quantity], unit_price: stock_item_params[:last_unit_buy_price], movement_type: "purchase", establishment_id: current_user.current_establishment_id)
@@ -42,7 +43,7 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def item_params
-    params.require(:item).permit(:name, :capacity_unit, :capacity, :bottles_number, :establishment_id)
+    params.require(:item).permit(:name, :capacity_unit, :capacity, :bottles_number)
   end
 
   def stock_item_params

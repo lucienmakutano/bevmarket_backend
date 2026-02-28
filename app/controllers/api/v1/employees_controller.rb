@@ -17,9 +17,10 @@ class Api::V1::EmployeesController < ApplicationController
     @user = User.find(employee_params[:user_id])
 
     @employee = Employee.new(employee_params)
+    @employee.establishment_id = current_user.current_establishment_id
 
     if @employee.save
-      @user.update!({ is_employed: true, current_establishment_id: employee_params[:establishment_id] })
+      @user.update!({ is_employed: true, current_establishment_id: current_user.current_establishment_id })
       render json: { status: "success", data: { employee: @employee.as_json(include: [:establishment, :user, { sale_point: { include: [:warehouse, :truck] } }]) } }, status: :created
     else
       render json: { status: "fail", error: { message: "Couldn't create employee" } }, status: :unprocessable_entity
@@ -56,7 +57,7 @@ class Api::V1::EmployeesController < ApplicationController
   private
 
   def employee_params
-    params.require(:employee).permit(:user_id, :establishment_id, :role, :sale_point_id)
+    params.require(:employee).permit(:user_id, :role, :sale_point_id)
   end
 
   def find_employee

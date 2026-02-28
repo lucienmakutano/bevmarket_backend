@@ -58,8 +58,9 @@ development:
 test:
   <<: *default
   database: bevmarket_test
-  username: postgres
-  password: 243243
+  username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "243243") %>
+  host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
 
   # As with config/credentials.yml, you never want to store sensitive information,
   # like your database password, in your source code. If your source code is
