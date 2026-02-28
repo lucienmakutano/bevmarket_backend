@@ -8,7 +8,9 @@ fi
 
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
-  ./bin/rails db:prepare || true
+  # Try db:prepare, but on Azure it may fail due to extension restrictions
+  # In that case, just run migrations which should work
+  ./bin/rails db:prepare || ./bin/rails db:migrate || true
 fi
 
 exec "${@}"
