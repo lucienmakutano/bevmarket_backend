@@ -1,7 +1,9 @@
+<% password_digest = Devise::Encryptor.digest(User, 'password123') %>
+
 admin_user:
   name: Admin User
   email: admin@example.com
-  encrypted_password: <%= BCrypt::Password.create('password123') %>
+  encrypted_password: <%= password_digest %>
   jti: <%= SecureRandom.uuid %>
   is_employed: true
   current_establishment_id: <%= ActiveRecord::FixtureSet.identify(:bevmart) %>
@@ -9,7 +11,7 @@ admin_user:
 employee_user:
   name: Employee User
   email: employee@example.com
-  encrypted_password: <%= BCrypt::Password.create('password123') %>
+  encrypted_password: <%= password_digest %>
   jti: <%= SecureRandom.uuid %>
   is_employed: true
   current_establishment_id: <%= ActiveRecord::FixtureSet.identify(:bevmart) %>
@@ -17,6 +19,6 @@ employee_user:
 unemployed_user:
   name: Unemployed User
   email: unemployed@example.com
-  encrypted_password: <%= BCrypt::Password.create('password123') %>
+  encrypted_password: <%= password_digest %>
   jti: <%= SecureRandom.uuid %>
   is_employed: false
