@@ -43,6 +43,7 @@ jobs:
 
       - name: Setup database
         run: |
+          chmod +x bin/*
           bin/rails db:create
           bin/rails db:schema:load
 
