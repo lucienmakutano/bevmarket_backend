@@ -2,8 +2,6 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.2.3
-ARG SECRET_KEY_BASE
-ARG DEVISE_JWT_SECRET_KEY
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
@@ -52,12 +50,6 @@ RUN apt-get update -qq && \
 # Copy built artifacts: gems, application
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
-
-# Set environment variables from build args
-ARG SECRET_KEY_BASE
-ARG DEVISE_JWT_SECRET_KEY
-ENV SECRET_KEY_BASE=${SECRET_KEY_BASE} \
-    DEVISE_JWT_SECRET_KEY=${DEVISE_JWT_SECRET_KEY}
 
 # Run and own only the runtime files AS a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
