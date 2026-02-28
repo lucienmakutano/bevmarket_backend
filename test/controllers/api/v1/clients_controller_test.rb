@@ -34,7 +34,7 @@ class Api::V1::ClientsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("Client.count", 1) do
       post api_v1_clients_url, params: {
         client: { name: "New Client", phone_number: "5551234567" }
-      }
+      }, as: :json
     end
     assert_response :created
     json = JSON.parse(response.body)
@@ -47,7 +47,7 @@ class Api::V1::ClientsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference("Client.count") do
       post api_v1_clients_url, params: {
         client: { phone_number: "5559999999" }
-      }
+      }, as: :json
     end
     assert_response :unprocessable_entity
     json = JSON.parse(response.body)
@@ -58,16 +58,18 @@ class Api::V1::ClientsControllerTest < ActionDispatch::IntegrationTest
     client = clients(:regular_client)
     patch api_v1_client_url(client), params: {
       client: { name: "Updated Name" }
-    }
+    }, as: :json
     assert_response :success
     json = JSON.parse(response.body)
     assert_equal "Updated Name", json["data"]["client"]["name"]
   end
 
   test "destroy deletes a client" do
-    client = clients(:regular_client)
+    # Create isolated records to avoid cascade via dependent: :destroy on belongs_to
+    est = Establishment.create!(name: "Temp", created_by: @user.id)
+    client = Client.create!(name: "Deletable", phone_number: "9999999999", establishment: est)
     assert_difference("Client.count", -1) do
-      delete api_v1_client_url(client)
+      delete api_v1_client_url(client), as: :json
     end
   end
 

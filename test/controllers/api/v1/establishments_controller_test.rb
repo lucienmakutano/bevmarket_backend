@@ -21,7 +21,7 @@ class Api::V1::EstablishmentsControllerTest < ActionDispatch::IntegrationTest
       post api_v1_establishments_url, params: {
         establishment: { name: "New Distro", created_by: new_user.id },
         warehouse: { name: "HQ Warehouse", location: "City Center" }
-      }
+      }, as: :json
     end
     assert_response :created
     json = JSON.parse(response.body)

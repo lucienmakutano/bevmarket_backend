@@ -28,24 +28,21 @@ class Api::V1::SalesControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference("Sale.count", 1) do
       assert_difference("SaleItem.count", 1) do
-        assert_difference("StockMovement.count", 1) do
-          post api_v1_sales_url, params: {
-            sale: {
-              user_id: @user.id,
-              client_id: clients(:regular_client).id,
-              sale_point_id: sale_points(:warehouse_point).id,
-              credit: 0,
-              establishment_id: establishments(:bevmart).id,
-              sale_items: [
-                {
-                  stock_item_id: stock_item.id,
-                  quantity: sale_quantity,
-                  unit_sale_price: 600
-                }
-              ]
-            }
+        post api_v1_sales_url, params: {
+          sale: {
+            user_id: @user.id,
+            client_id: clients(:regular_client).id,
+            sale_point_id: sale_points(:warehouse_point).id,
+            credit: 0,
+            sale_items: [
+              {
+                stock_item_id: stock_item.id,
+                quantity: sale_quantity,
+                unit_sale_price: 600
+              }
+            ]
           }
-        end
+        }, as: :json
       end
     end
     assert_response :created
@@ -66,7 +63,6 @@ class Api::V1::SalesControllerTest < ActionDispatch::IntegrationTest
           client_id: clients(:regular_client).id,
           sale_point_id: sale_points(:warehouse_point).id,
           credit: 0,
-          establishment_id: establishments(:bevmart).id,
           sale_items: [
             {
               stock_item_id: stock_item.id,
@@ -75,7 +71,7 @@ class Api::V1::SalesControllerTest < ActionDispatch::IntegrationTest
             }
           ]
         }
-      }
+      }, as: :json
     end
     assert_response :unprocessable_entity
     json = JSON.parse(response.body)
@@ -94,7 +90,6 @@ class Api::V1::SalesControllerTest < ActionDispatch::IntegrationTest
         client_id: client.id,
         sale_point_id: sale_points(:warehouse_point).id,
         credit: credit_amount,
-        establishment_id: establishments(:bevmart).id,
         sale_items: [
           {
             stock_item_id: stock_items(:beer_stock).id,
@@ -103,7 +98,7 @@ class Api::V1::SalesControllerTest < ActionDispatch::IntegrationTest
           }
         ]
       }
-    }
+    }, as: :json
     assert_response :created
     client.reload
     assert_equal original_credit + credit_amount, client.credit

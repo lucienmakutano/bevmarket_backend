@@ -56,7 +56,7 @@ class Api::V1::ExpensesControllerTest < ActionDispatch::IntegrationTest
           user_id: @user.id,
           sale_point_id: sale_points(:warehouse_point).id
         }
-      }
+      }, as: :json
     end
     assert_response :created
     json = JSON.parse(response.body)
@@ -72,7 +72,7 @@ class Api::V1::ExpensesControllerTest < ActionDispatch::IntegrationTest
           user_id: @user.id,
           sale_point_id: sale_points(:warehouse_point).id
         }
-      }
+      }, as: :json
     end
     assert_response :unprocessable_entity
   end

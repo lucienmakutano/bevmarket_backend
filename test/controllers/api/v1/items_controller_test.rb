@@ -33,7 +33,7 @@ class Api::V1::ItemsControllerTest < ActionDispatch::IntegrationTest
               reduction_sale_price: 700,
               average_unit_buy_price: 600
             }
-          }
+          }, as: :json
         end
       end
     end
@@ -54,7 +54,7 @@ class Api::V1::ItemsControllerTest < ActionDispatch::IntegrationTest
           reduction_sale_price: 700,
           average_unit_buy_price: 600
         }
-      }
+      }, as: :json
     end
     assert_response :unprocessable_entity
   end
@@ -63,16 +63,18 @@ class Api::V1::ItemsControllerTest < ActionDispatch::IntegrationTest
     item = items(:beer_item)
     patch api_v1_item_url(item), params: {
       item: { name: "Updated Beer" }
-    }
+    }, as: :json
     assert_response :success
     json = JSON.parse(response.body)
     assert_equal "Updated Beer", json["data"]["item"]["name"]
   end
 
   test "destroy deletes an item" do
-    item = items(:beer_item)
+    # Create isolated records to avoid cascade via dependent: :destroy on belongs_to
+    est = Establishment.create!(name: "Temp", created_by: @user.id)
+    item = Item.create!(name: "Deletable", bottles_number: 6, capacity: 33, establishment: est)
     assert_difference("Item.count", -1) do
-      delete api_v1_item_url(item)
+      delete api_v1_item_url(item), as: :json
     end
   end
 end

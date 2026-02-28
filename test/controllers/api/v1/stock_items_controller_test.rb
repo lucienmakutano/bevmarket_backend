@@ -35,7 +35,7 @@ class Api::V1::StockItemsControllerTest < ActionDispatch::IntegrationTest
     patch api_v1_stock_item_url(stock_item), params: {
       update_mode: "is_adding_to_stock",
       stock_item: { quantity: add_quantity, unit_buy_price: 550 }
-    }
+    }, as: :json
     assert_response :success
     json = JSON.parse(response.body)
     assert_equal "success", json["status"]
@@ -50,7 +50,7 @@ class Api::V1::StockItemsControllerTest < ActionDispatch::IntegrationTest
       patch api_v1_stock_item_url(stock_item), params: {
         update_mode: "is_adding_to_stock",
         stock_item: { quantity: 10, unit_buy_price: 500 }
-      }
+      }, as: :json
     end
   end
 
@@ -59,7 +59,7 @@ class Api::V1::StockItemsControllerTest < ActionDispatch::IntegrationTest
     patch api_v1_stock_item_url(stock_item), params: {
       update_mode: "is_updating_price",
       stock_item: { unit_sale_price: 700, reduction_sale_price: 650 }
-    }
+    }, as: :json
     assert_response :success
     stock_item.reload
     assert_equal 700, stock_item.unit_sale_price
@@ -70,7 +70,7 @@ class Api::V1::StockItemsControllerTest < ActionDispatch::IntegrationTest
     stock_item = stock_items(:beer_stock)
     patch api_v1_stock_item_url(stock_item), params: {
       stock_item: { quantity: 10 }
-    }
+    }, as: :json
     assert_response :unprocessable_entity
     json = JSON.parse(response.body)
     assert_match(/update mode/i, json["error"]["message"])

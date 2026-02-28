@@ -14,7 +14,7 @@ class Api::V1::SalePointStockItemsControllerTest < ActionDispatch::IntegrationTe
           sale_point_id: sale_points(:warehouse_point).id,
           quantity: 30
         }
-      }
+      }, as: :json
     end
     assert_response :created
     json = JSON.parse(response.body)

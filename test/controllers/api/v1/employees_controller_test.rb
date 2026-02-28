@@ -47,7 +47,7 @@ class Api::V1::EmployeesControllerTest < ActionDispatch::IntegrationTest
           role: "employee",
           sale_point_id: sale_points(:warehouse_point).id
         }
-      }
+      }, as: :json
     end
     assert_response :created
     json = JSON.parse(response.body)
