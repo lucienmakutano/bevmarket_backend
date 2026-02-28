@@ -20,7 +20,7 @@ Rails.application.configure do
   config.require_master_key = false
 
   # Set secret_key_base from environment variable
-  config.secret_key_base = ENV["SECRET_KEY_BASE"] || ENV.fetch("RAILS_SECRET_KEY_BASE", nil)
+  config.secret_key_base = ENV["SECRET_KEY_BASE"] || ENV.fetch("RAILS_SECRET_KEY_BASE") { SecureRandom.hex(32) }
 
   # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
   # config.public_file_server.enabled = false
