@@ -16,6 +16,7 @@ class Api::V1::ClientsController < ApplicationController
   # POST api/v1/clients
   def create
     @client = Client.new(client_params)
+    @client.establishment_id = current_user.current_establishment_id
     if @client.save
       render json: {status: "success", data: {client: @client}}, status: :created
     else
@@ -52,6 +53,6 @@ class Api::V1::ClientsController < ApplicationController
 
   # Permit client request params
   def client_params
-    params.require(:client).permit(:name, :phone_number, :is_partener, :credit, :establishment_id)
+    params.require(:client).permit(:name, :phone_number, :is_partener, :credit)
   end
 end

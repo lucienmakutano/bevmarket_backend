@@ -36,7 +36,7 @@ class Api::V1::SalesController < ApplicationController
   def show
     @sale = Sale.includes(:client, :user, sale_items: :stock_item).find(params[:id])
 
-    render json: {status: "success", data: {sale: @sale.as_json(include: [:client, :user, sale_items: :stock_item])}}
+    render json: {status: "success", data: {sale: @sale.as_json(include: {client: {}, user: {}, sale_items: {include: :stock_item}})}}
 
   rescue ActiveRecord::RecordNotFound
     render json: {status: "fail", error: {message: "Sale not found"}}, status: :not_found
@@ -60,7 +60,8 @@ class Api::V1::SalesController < ApplicationController
 
     client.update({credit: client[:credit] + sale_params[:credit]})
     # Create the sale
-    sale = Sale.new(user_id: sale_params[:user_id], client_id: sale_params[:client_id], sale_point_id: sale_params[:sale_point_id], establishment_id: sale_params[:establishment_id])
+    sale = Sale.new(user_id: sale_params[:user_id], client_id: sale_params[:client_id], sale_point_id: sale_params[:sale_point_id])
+    sale.establishment_id = current_user.current_establishment_id
 
     if sale.save
       # Create the sale items of that sale and subtract the quantity of the stock items
@@ -102,7 +103,7 @@ class Api::V1::SalesController < ApplicationController
 
   # Permit new sale params
   def sale_params
-    params.require(:sale).permit(:user_id, :credit, :client_id, :sale_point_id, :establishment_id, sale_items: [:quantity, :stock_item_id, :unit_sale_price])
+    params.require(:sale).permit(:user_id, :credit, :client_id, :sale_point_id, sale_items: [:quantity, :stock_item_id, :unit_sale_price])
   end
 
   def valid_date?(date_string)

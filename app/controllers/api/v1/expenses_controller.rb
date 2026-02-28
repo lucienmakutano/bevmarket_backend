@@ -31,6 +31,7 @@ class Api::V1::ExpensesController < ApplicationController
   # POST api/v1/expenses
   def create
     @expense = Expense.new(expense_params)
+    @expense.establishment_id = current_user.current_establishment_id
 
     if @expense.save
       render json: {status: "success", data: {expense: @expense}}, status: :created
@@ -41,7 +42,9 @@ class Api::V1::ExpensesController < ApplicationController
 
   # UPDATE api/v1/expenses/:id
   def update
-    if @expense.update(expense_params)
+    # Ensure establishment_id is not changed
+    params_to_update = expense_params
+    if @expense.update(params_to_update)
       render json: {status: "success", data: {expense: @expense} }
     else
       render json: {status: "fail", error: {message: "Couldn't update expense"}}, status: :unprocessable_entity
@@ -64,7 +67,7 @@ class Api::V1::ExpensesController < ApplicationController
 
   # Permit expense request params
   def expense_params
-    params.require(:expense).permit(:user_id, :amount, :reason, :sale_point_id, :establishment_id)
+    params.require(:expense).permit(:user_id, :amount, :reason, :sale_point_id)
   end
 
   def valid_date?(date_string)

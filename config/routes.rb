@@ -32,6 +32,7 @@ Rails.application.routes.draw do
           resources :purchases, only: [:index]
           resources :unemployed_users, only: [:index]
           resources :stock_movements, only: [:index]
+          resources :sale_point_stock_items, only: [:index, :create]
         end
   end
 end

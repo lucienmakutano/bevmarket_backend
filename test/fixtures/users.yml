@@ -1,11 +1,24 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+<% password_digest = Devise::Encryptor.digest(User, 'password123') %>
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the "{}" from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+admin_user:
+  name: Admin User
+  email: admin@example.com
+  encrypted_password: <%= password_digest %>
+  jti: <%= SecureRandom.uuid %>
+  is_employed: true
+  current_establishment_id: <%= ActiveRecord::FixtureSet.identify(:bevmart) %>
+
+employee_user:
+  name: Employee User
+  email: employee@example.com
+  encrypted_password: <%= password_digest %>
+  jti: <%= SecureRandom.uuid %>
+  is_employed: true
+  current_establishment_id: <%= ActiveRecord::FixtureSet.identify(:bevmart) %>
+
+unemployed_user:
+  name: Unemployed User
+  email: unemployed@example.com
+  encrypted_password: <%= password_digest %>
+  jti: <%= SecureRandom.uuid %>
+  is_employed: false

@@ -15,6 +15,7 @@ class Api::V1::SalePointsController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       @sale_point = SalePoint.new(sale_point_params)
+      @sale_point.establishment_id = current_user.current_establishment_id
 
       if @sale_point.save
         related_entity = create_related_entity(@sale_point)
@@ -33,7 +34,7 @@ class Api::V1::SalePointsController < ApplicationController
   private
 
   def sale_point_params
-    params.require(:sale_point).permit(:establishment_id, :sale_point_type)
+    params.require(:sale_point).permit(:sale_point_type)
   end
 
   def truck_params

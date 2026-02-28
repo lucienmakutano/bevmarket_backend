@@ -1,11 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+regular_client:
+  name: Regular Client
+  phone_number: "1234567890"
+  is_partener: false
+  credit: 0.0
+  establishment: bevmart
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the "{}" from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+partner_client:
+  name: Partner Client
+  phone_number: "0987654321"
+  is_partener: true
+  credit: 100.0
+  establishment: bevmart

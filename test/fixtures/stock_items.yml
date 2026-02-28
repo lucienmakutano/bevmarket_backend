@@ -1,11 +1,15 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+beer_stock:
+  item: beer_item
+  quantity: 100
+  last_unit_buy_price: 500.0
+  reduction_sale_price: 550.0
+  unit_sale_price: 600.0
+  average_unit_buy_price: 500.0
 
-# This model initially had no columns defined. If you add columns to the
-# model remove the "{}" from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+soda_stock:
+  item: soda_item
+  quantity: 50
+  last_unit_buy_price: 300.0
+  reduction_sale_price: 350.0
+  unit_sale_price: 400.0
+  average_unit_buy_price: 300.0
